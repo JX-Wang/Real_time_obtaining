@@ -30,8 +30,7 @@ def start():
 
 @app.route('/monitor/realtime/<domain>')
 def obtaining(domain):
-    """Get domain dns"""
-
+    """Get domain dns real time"""
     pass
 
 
