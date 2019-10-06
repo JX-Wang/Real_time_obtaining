@@ -10,7 +10,7 @@ Data@2019.9.26
 from flask import Flask
 from gevent import monkey
 from gevent.pywsgi import WSGIServer
-
+from redis import *
 monkey.patch_all()
 app = Flask("Obtaining Dns")
 app.config.update(DEBUG=True)
@@ -31,6 +31,10 @@ def start():
 @app.route('/monitor/realtime/<domain>')
 def obtaining(domain):
     """Get domain dns real time"""
+    # resolving items
+    # get NS IP from Redis
+    # resolving DNS
+    # Return
     pass
 
 
