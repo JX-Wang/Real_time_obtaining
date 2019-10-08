@@ -32,7 +32,7 @@ def obtaining():
     """Get domain dns real time"""
     domain = request.args.get('domain')
     req_type = request.args.get('type')
-    print domain, req_type
+    # print domain, req_type
     ns_rst = resolving_domain_ns(domain)
     count = len(ns_rst)
     rst = {
