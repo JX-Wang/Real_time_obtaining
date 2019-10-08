@@ -7,15 +7,14 @@ Author@Wangjunxiong
 Data@2019.9.26
 """
 
-from flask import Flask
+from flask import Flask, request
 from gevent import monkey
 from gevent.pywsgi import WSGIServer
-from redis import *
+from resolving_domain_dns.resolving_domain_ns_combined import resolving_domain_ns
 monkey.patch_all()
 app = Flask("Obtaining Dns")
 app.config.update(DEBUG=True)
-
-file_name = "effective_ApiNode.txt"
+TYPE = ['A', 'NS', 'AAAA', 'CNAME']
 _port = 8048
 
 
@@ -28,14 +27,22 @@ def start():
     http_server.serve_forever()
 
 
-@app.route('/monitor/realtime/<domain>')
-def obtaining(domain):
+@app.route('/monitor/realtime/domain')
+def obtaining():
     """Get domain dns real time"""
-    # resolving items
-    # get NS IP from Redis
-    # resolving DNS
-    # Return
-    pass
+    domain = request.args.get('domain')
+    req_type = request.args.get('type')
+    print domain, req_type
+    ns_rst = resolving_domain_ns(domain)
+    count = len(ns_rst)
+    rst = {
+            "domain": domain,
+            "type": req_type,
+            "count": count,
+            "record": ns_rst
+    }
+    print rst
+    return rst
 
 
 @app.route('/check')
