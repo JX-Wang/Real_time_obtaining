@@ -10,12 +10,18 @@ Data@2019.9.26
 from flask import Flask, request
 from gevent import monkey
 from gevent.pywsgi import WSGIServer
+import random
+
 from resolving_domain_dns.resolving_domain_ns_combined import resolving_domain_ns
+from ab_test import TEST
+
 monkey.patch_all()
 app = Flask("Obtaining Dns")
 app.config.update(DEBUG=True)
 TYPE = ['A', 'NS', 'AAAA', 'CNAME']
 _port = 8048
+f = open("domain", 'r')
+DOMAIN = f.readlines()
 
 
 def start():
@@ -41,7 +47,8 @@ def obtaining():
             "count": count,
             "record": ns_rst
     }
-    print rst
+
+    TEST.test_inser_db(domain=domain, ns=ns_rst)
     return rst
 
 
@@ -52,13 +59,27 @@ def check():
     """
 
 
+@app.route('/abtest')
+def abtest():
+    """
+    ab pressure test
+    :return: NULL
+    """
+    domain = random.choice(DOMAIN).strip()
+    print domain
+    ns_rst = resolving_domain_ns(domain)
+    print ns_rst
+    TEST.test_inser_db(domain=domain, ns=ns_rst)
+    return "Done"
+
+
 if __name__ == '__main__':
     start()
 
 """
 test url
 
-http://3.106.165.57:8048/monitor/realtime/domain?domain=wudly.cn&type=NS
+http://39.106.165.57:8048/monitor/realtime/domain?domain=wudly.cn&type=NS
 
 
 """
