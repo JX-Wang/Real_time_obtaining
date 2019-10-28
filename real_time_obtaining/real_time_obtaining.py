@@ -54,3 +54,11 @@ def check():
 
 if __name__ == '__main__':
     start()
+
+"""
+test url
+
+http://3.106.165.57:8048/monitor/realtime/domain?domain=wudly.cn&type=NS
+
+
+"""
