@@ -30,5 +30,6 @@ class TEST(object):
             print e
             self.db.rollback()
 
+
 TEST = TEST()
 
